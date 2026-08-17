@@ -37,6 +37,7 @@ export interface Program {
   targetAudience: string;
   areaOfInterest: string;
   status: ProgramStatus;
+  coordinatorId?: string;
   createdAt: string;
   updatedAt: string;
 }
@@ -55,6 +56,7 @@ export interface Participant {
   status: RegistrationStatus;
   programId: string;
   programName: string;
+  registrationId?: string;
   registeredDate: string;
   attendanceDate?: string;
   participationDate?: string;

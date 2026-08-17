@@ -11,6 +11,7 @@ export const createProgramSchema = z.object({
   endDate: z.string().datetime({ message: 'End date must be ISO 8601' }),
   maxParticipants: z.number().int().positive().optional(),
   maxVolunteers: z.number().int().positive().optional(),
+  status: z.nativeEnum(ProgramStatus).optional(),
   coordinatorId: z.string().uuid().optional(),
 });
 

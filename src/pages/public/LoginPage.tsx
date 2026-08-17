@@ -27,7 +27,7 @@ export const LoginPage: React.FC = () => {
     setError('');
 
     try {
-      await login(email);
+      await login(email, password);
       setLoading(false);
       navigate('/admin/dashboard');
     } catch (err) {

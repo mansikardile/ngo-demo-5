@@ -83,11 +83,19 @@ export const programService = {
       },
     });
 
-    const programCode = generateProgramCode(
+    let seqNumber = count + 1;
+    let programCode = generateProgramCode(
       input.category,
       input.location,
-      count + 1
+      seqNumber
     );
+
+    let existing = await prisma.program.findUnique({ where: { programCode } });
+    while (existing) {
+      seqNumber += 1;
+      programCode = generateProgramCode(input.category, input.location, seqNumber);
+      existing = await prisma.program.findUnique({ where: { programCode } });
+    }
 
     const program = await prisma.program.create({
       data: {

@@ -7,7 +7,7 @@ interface AuthContextType {
   user: User | null;
   role: UserRole;
   isAuthenticated: boolean;
-  login: (email: string) => Promise<void>;
+  login: (email: string, password?: string) => Promise<void>;
   logout: () => void;
   setRole: (role: UserRole) => void;
 }
@@ -32,8 +32,8 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     }
   }, [user]);
 
-  const login = async (email: string) => {
-    const res = await authService.login(email);
+  const login = async (email: string, password?: string) => {
+    const res = await authService.login(email, password);
     if (res.success && res.data) {
       setUser(res.data.user);
       setRoleState(res.data.user.role);
@@ -41,6 +41,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   };
 
   const logout = () => {
+    authService.logout();
     setUser(null);
   };
 
@@ -52,6 +53,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     };
     setUser(matchedUser);
     setRoleState(newRole);
+    authService.switchRole(newRole);
   };
 
   return (
