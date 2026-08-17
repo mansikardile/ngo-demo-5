@@ -1,0 +1,108 @@
+import { Volunteer } from '../types';
+
+export const mockVolunteers: Volunteer[] = [
+  {
+    id: 'vol-uuid-001',
+    volunteerId: 'VOL-PUN-042',
+    name: 'Kabir Mehta',
+    email: 'kabir.mehta@gmail.com',
+    phone: '+91 98900 12345',
+    location: 'Pune',
+    status: 'ACTIVE',
+    totalHours: 126,
+    lastParticipation: '2026-08-05',
+    skills: ['Robotics Teaching', 'Public Speaking', 'Event Coordination'],
+    assignedPrograms: [
+      {
+        programId: 'prg-uuid-001',
+        programName: 'Community STEM & Digital Empowerment Workshop',
+        role: 'Lead STEM Mentor',
+        hoursLogged: 42,
+      },
+      {
+        programId: 'prg-uuid-003',
+        programName: 'Rural Youth Mental Health & Wellness Drive',
+        role: 'Registration & Logistics Lead',
+        hoursLogged: 34,
+      },
+      {
+        programId: 'prg-uuid-005',
+        programName: 'Urban Agriculture & Organic Farming Drive',
+        role: 'Workshop Facilitator',
+        hoursLogged: 50,
+      },
+    ],
+  },
+  {
+    id: 'vol-uuid-002',
+    volunteerId: 'VOL-MUM-018',
+    name: 'Tanvi Shinde',
+    email: 'tanvi.shinde@techcorp.io',
+    phone: '+91 97690 98765',
+    location: 'Mumbai',
+    status: 'ASSIGNED',
+    totalHours: 78,
+    lastParticipation: '2026-07-20',
+    skills: ['Environmental Science', 'First Aid', 'Social Media Management'],
+    assignedPrograms: [
+      {
+        programId: 'prg-uuid-002',
+        programName: 'Mula-Mutha Clean River & Eco Campaign',
+        role: 'Waste Segregation Captain',
+        hoursLogged: 38,
+      },
+      {
+        programId: 'prg-uuid-005',
+        programName: 'Urban Agriculture & Organic Farming Drive',
+        role: 'Field Volunteer',
+        hoursLogged: 40,
+      },
+    ],
+  },
+  {
+    id: 'vol-uuid-003',
+    volunteerId: 'VOL-DEL-009',
+    name: 'Devansh Roy',
+    email: 'devansh.roy@du.ac.in',
+    phone: '+91 98100 54321',
+    location: 'Delhi',
+    status: 'REGISTERED',
+    totalHours: 18,
+    lastParticipation: '2026-06-15',
+    skills: ['Craft & Design', 'Translation (Hindi/English)', 'Photography'],
+    assignedPrograms: [
+      {
+        programId: 'prg-uuid-004',
+        programName: 'Women Skill Enhancement & Craft Bootcamp',
+        role: 'Design Assistant',
+        hoursLogged: 18,
+      },
+    ],
+  },
+  {
+    id: 'vol-uuid-004',
+    volunteerId: 'VOL-PUN-089',
+    name: 'Riya Nair',
+    email: 'riya.nair@symbiosis.ac.in',
+    phone: '+91 98220 44556',
+    location: 'Pune',
+    status: 'COMPLETED',
+    totalHours: 94,
+    lastParticipation: '2026-08-05',
+    skills: ['Counseling', 'Medical Assisting', 'Data Entry'],
+    assignedPrograms: [
+      {
+        programId: 'prg-uuid-003',
+        programName: 'Rural Youth Mental Health & Wellness Drive',
+        role: 'Counseling Coordinator',
+        hoursLogged: 54,
+      },
+      {
+        programId: 'prg-uuid-001',
+        programName: 'Community STEM & Digital Empowerment Workshop',
+        role: 'Student Desk Coordinator',
+        hoursLogged: 40,
+      },
+    ],
+  },
+];
