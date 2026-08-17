@@ -1,0 +1,15 @@
+# Root gitignore
+*.docx
+~$*
+
+# Env files — never commit secrets
+**/.env
+**/.env.local
+**/.env.production
+
+# Node
+**/node_modules/
+**/dist/
+
+# Prisma generated
+**/.prisma/
