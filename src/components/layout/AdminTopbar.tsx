@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
-import { Search, Bell, Shield, ChevronDown, Check } from 'lucide-react';
+import { useNavigate, Link } from 'react-router-dom';
+import { Search, Bell, Shield, ChevronDown, Check, LogOut, Home } from 'lucide-react';
 import { useAuth } from '../../context/AuthContext';
 import { UserRole } from '../../types';
 import { mockNotifications } from '../../mock/notifications';
@@ -9,9 +10,16 @@ export interface AdminTopbarProps {
 }
 
 export const AdminTopbar: React.FC<AdminTopbarProps> = ({ onToggleMobileSidebar }) => {
-  const { user, role, setRole } = useAuth();
+  const navigate = useNavigate();
+  const { user, role, setRole, logout } = useAuth();
   const [roleDropdownOpen, setRoleDropdownOpen] = useState(false);
   const [notifDropdownOpen, setNotifDropdownOpen] = useState(false);
+  const [userDropdownOpen, setUserDropdownOpen] = useState(false);
+
+  const handleLogout = () => {
+    logout();
+    navigate('/login');
+  };
 
   const roles: { key: UserRole; label: string; desc: string }[] = [
     { key: 'ADMIN', label: 'Admin Role', desc: 'Full System Access & Analytics' },
@@ -47,9 +55,9 @@ export const AdminTopbar: React.FC<AdminTopbarProps> = ({ onToggleMobileSidebar 
           {roleDropdownOpen && (
             <div className="absolute right-0 mt-2 w-64 bg-white border border-slate-200 rounded-2xl shadow-xl p-2 z-50 animate-in fade-in zoom-in-95 duration-150">
               <div className="px-3 py-2 border-b border-slate-100 mb-1">
-                <span className="text-[10px] uppercase font-bold tracking-wider text-slate-400 block">Switch Prototype Role</span>
+                <span className="text-[10px] uppercase font-bold tracking-wider text-slate-400 block">Switch Role View</span>
                 <span className="text-[11px] text-slate-500 block leading-tight mt-0.5">
-                  Frontend UX view only. True authorization enforced by backend in Phase 2.
+                  Filters management modules by authorized permissions.
                 </span>
               </div>
               {roles.map((r) => (
@@ -103,20 +111,53 @@ export const AdminTopbar: React.FC<AdminTopbarProps> = ({ onToggleMobileSidebar 
           )}
         </div>
 
-        {/* User Profile Avatar */}
-        {user && (
-          <div className="flex items-center gap-2.5 pl-3 border-l border-slate-200">
+        {/* User Profile Avatar with Dropdown */}
+        <div className="relative">
+          <button
+            onClick={() => setUserDropdownOpen(!userDropdownOpen)}
+            className="flex items-center gap-2.5 pl-3 border-l border-slate-200 cursor-pointer hover:opacity-90 transition-opacity"
+          >
             <img
-              src={user.avatarUrl || 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=100'}
-              alt={user.name}
+              src={user?.avatarUrl || 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=100'}
+              alt={user?.name || 'Admin'}
               className="w-8.5 h-8.5 rounded-full border border-indigo-200 object-cover shadow-xs"
             />
             <div className="hidden sm:block text-left">
-              <div className="text-xs font-bold text-slate-900 leading-tight">{user.name}</div>
+              <div className="text-xs font-bold text-slate-900 leading-tight">{user?.name || 'Admin'}</div>
               <div className="text-[10px] text-slate-400 font-semibold leading-none">{role}</div>
             </div>
-          </div>
-        )}
+            <ChevronDown className="w-3.5 h-3.5 text-slate-400 hidden sm:block" />
+          </button>
+
+          {userDropdownOpen && (
+            <div className="absolute right-0 mt-2 w-52 bg-white border border-slate-200 rounded-2xl shadow-xl p-1.5 z-50 animate-in fade-in zoom-in-95 duration-150">
+              <div className="px-3 py-2 border-b border-slate-100 mb-1">
+                <p className="text-xs font-bold text-slate-900 truncate">{user?.name || 'Admin'}</p>
+                <p className="text-[11px] text-slate-400 truncate">{user?.email || 'admin@ngo.org'}</p>
+              </div>
+
+              <Link
+                to="/"
+                onClick={() => setUserDropdownOpen(false)}
+                className="w-full flex items-center gap-2.5 px-3 py-2 rounded-xl text-xs font-medium text-slate-700 hover:bg-slate-50 transition-colors"
+              >
+                <Home className="w-4 h-4 text-slate-400" />
+                <span>Go to Public Site</span>
+              </Link>
+
+              <button
+                onClick={() => {
+                  setUserDropdownOpen(false);
+                  handleLogout();
+                }}
+                className="w-full flex items-center gap-2.5 px-3 py-2 rounded-xl text-xs font-semibold text-rose-600 hover:bg-rose-50 transition-colors cursor-pointer"
+              >
+                <LogOut className="w-4 h-4 text-rose-500" />
+                <span>Log Out</span>
+              </button>
+            </div>
+          )}
+        </div>
       </div>
     </header>
   );

@@ -17,7 +17,7 @@ const AuthContext = createContext<AuthContextType | undefined>(undefined);
 export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [user, setUser] = useState<User | null>(() => {
     const saved = localStorage.getItem('ngo_user');
-    return saved ? JSON.parse(saved) : mockUsers[0];
+    return saved ? JSON.parse(saved) : null;
   });
 
   const [role, setRoleState] = useState<UserRole>(() => {
@@ -27,8 +27,10 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   useEffect(() => {
     if (user) {
       localStorage.setItem('ngo_user', JSON.stringify(user));
+      setRoleState(user.role);
     } else {
       localStorage.removeItem('ngo_user');
+      localStorage.removeItem('auth_token');
     }
   }, [user]);
 
@@ -42,6 +44,8 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
   const logout = () => {
     authService.logout();
+    localStorage.removeItem('ngo_user');
+    localStorage.removeItem('auth_token');
     setUser(null);
   };
 

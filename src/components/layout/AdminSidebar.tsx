@@ -1,5 +1,5 @@
 import React from 'react';
-import { Link, useLocation } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import {
   LayoutDashboard,
   Calendar,
@@ -25,7 +25,13 @@ export interface AdminSidebarProps {
 
 export const AdminSidebar: React.FC<AdminSidebarProps> = ({ collapsed, onToggleCollapse }) => {
   const location = useLocation();
+  const navigate = useNavigate();
   const { user, role, logout } = useAuth();
+
+  const handleLogout = () => {
+    logout();
+    navigate('/login');
+  };
 
   const navigationItems = [
     { name: 'Dashboard', path: '/admin/dashboard', icon: LayoutDashboard, roles: ['ADMIN', 'STAFF', 'COORDINATOR'] },
@@ -67,7 +73,7 @@ export const AdminSidebar: React.FC<AdminSidebarProps> = ({ collapsed, onToggleC
           </Link>
           <button
             onClick={onToggleCollapse}
-            className="text-slate-400 hover:text-slate-700 p-1.5 rounded-lg hover:bg-slate-100 transition-colors hidden lg:block"
+            className="text-slate-400 hover:text-slate-700 p-1.5 rounded-lg hover:bg-slate-100 transition-colors hidden lg:block cursor-pointer"
           >
             {collapsed ? <ChevronRight className="w-4 h-4" /> : <ChevronLeft className="w-4 h-4" />}
           </button>
@@ -140,11 +146,12 @@ export const AdminSidebar: React.FC<AdminSidebarProps> = ({ collapsed, onToggleC
             </div>
           )}
           <button
-            onClick={logout}
+            onClick={handleLogout}
             title="Log out"
-            className="text-slate-400 hover:text-rose-600 p-2 rounded-lg hover:bg-slate-100 transition-colors"
+            className="text-slate-400 hover:text-rose-600 p-2 rounded-lg hover:bg-rose-50 hover:border-rose-100 border border-transparent transition-all cursor-pointer flex items-center gap-1.5"
           >
-            <LogOut className="w-4 h-4" />
+            <LogOut className="w-4 h-4 text-rose-500" />
+            {!collapsed && <span className="text-xs font-semibold text-rose-600">Logout</span>}
           </button>
         </div>
       </div>
