@@ -1,0 +1,6 @@
+# .gitignore — Backend
+node_modules/
+dist/
+.env
+*.env.local
+prisma/migrations/*.sql
