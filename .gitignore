@@ -13,3 +13,7 @@
 
 # Prisma generated
 **/.prisma/
+
+# Postman cache
+.postman/
+postman/

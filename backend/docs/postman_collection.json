@@ -1,0 +1,225 @@
+{
+  "info": {
+    "name": "NGO Community Impact Tracking API",
+    "_postman_id": "ngo-community-api-v1",
+    "description": "API collection for Community Program & Volunteer Impact Tracking System",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:5000/api/v1",
+      "type": "string"
+    },
+    {
+      "key": "token",
+      "value": "",
+      "type": "string"
+    }
+  ],
+  "item": [
+    {
+      "name": "0. Health Check",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:5000/health",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "5000",
+          "path": ["health"]
+        }
+      }
+    },
+    {
+      "name": "1. Auth - Admin Login",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "var jsonData = pm.response.json();",
+              "if (jsonData.success && jsonData.data && jsonData.data.accessToken) {",
+              "    pm.collectionVariables.set('token', jsonData.data.accessToken);",
+              "    console.log('Token saved to collection variable!');",
+              "}"
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ],
+      "request": {
+        "method": "POST",
+        "header": [
+          { "key": "Content-Type", "value": "application/json" }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"email\": \"admin@ngo.org\",\n  \"password\": \"Admin@12345\"\n}"
+        },
+        "url": {
+          "raw": "{{baseUrl}}/auth/login",
+          "host": ["{{baseUrl}}"],
+          "path": ["auth", "login"]
+        }
+      }
+    },
+    {
+      "name": "2. Auth - Get Profile (Me)",
+      "request": {
+        "method": "GET",
+        "header": [
+          { "key": "Authorization", "value": "Bearer {{token}}" }
+        ],
+        "url": {
+          "raw": "{{baseUrl}}/auth/me",
+          "host": ["{{baseUrl}}"],
+          "path": ["auth", "me"]
+        }
+      }
+    },
+    {
+      "name": "3. Programs - List All (Search & Filter)",
+      "request": {
+        "method": "GET",
+        "header": [
+          { "key": "Authorization", "value": "Bearer {{token}}" }
+        ],
+        "url": {
+          "raw": "{{baseUrl}}/programs?page=1&limit=10",
+          "host": ["{{baseUrl}}"],
+          "path": ["programs"],
+          "query": [
+            { "key": "page", "value": "1" },
+            { "key": "limit", "value": "10" }
+          ]
+        }
+      }
+    },
+    {
+      "name": "4. Programs - Create Program",
+      "request": {
+        "method": "POST",
+        "header": [
+          { "key": "Content-Type", "value": "application/json" },
+          { "key": "Authorization", "value": "Bearer {{token}}" }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"name\": \"Youth Tech Bootcamp 2026\",\n  \"category\": \"Skill Development\",\n  \"location\": \"Pune\",\n  \"address\": \"Alandi Campus, Pune\",\n  \"startDate\": \"2026-10-01T09:00:00.000Z\",\n  \"endDate\": \"2026-10-05T17:00:00.000Z\",\n  \"maxParticipants\": 60,\n  \"maxVolunteers\": 12,\n  \"description\": \"Intensive coding and career preparation workshop for youth.\"\n}"
+        },
+        "url": {
+          "raw": "{{baseUrl}}/programs",
+          "host": ["{{baseUrl}}"],
+          "path": ["programs"]
+        }
+      }
+    },
+    {
+      "name": "5. Public - Register Participant",
+      "request": {
+        "method": "POST",
+        "header": [
+          { "key": "Content-Type", "value": "application/json" }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"name\": \"Rohan Deshmukh\",\n  \"email\": \"rohan.deshmukh@example.com\",\n  \"phone\": \"9823012345\",\n  \"location\": \"Pune\",\n  \"college\": \"VIT Pune\",\n  \"ageOrYear\": \"3rd Year\",\n  \"areaOfInterest\": \"Technology & Web Development\"\n}"
+        },
+        "url": {
+          "raw": "{{baseUrl}}/programs/:programId/register/participant",
+          "host": ["{{baseUrl}}"],
+          "path": ["programs", ":programId", "register", "participant"],
+          "variable": [
+            { "key": "programId", "value": "REPLACE_WITH_PROGRAM_ID" }
+          ]
+        }
+      }
+    },
+    {
+      "name": "6. Public - Track Participant by Tracking ID",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/participants/track/CPR-PAR-SEED0001",
+          "host": ["{{baseUrl}}"],
+          "path": ["participants", "track", "CPR-PAR-SEED0001"]
+        }
+      }
+    },
+    {
+      "name": "7. Admin - List All Participants",
+      "request": {
+        "method": "GET",
+        "header": [
+          { "key": "Authorization", "value": "Bearer {{token}}" }
+        ],
+        "url": {
+          "raw": "{{baseUrl}}/participants?page=1&limit=20",
+          "host": ["{{baseUrl}}"],
+          "path": ["participants"],
+          "query": [
+            { "key": "page", "value": "1" },
+            { "key": "limit", "value": "20" }
+          ]
+        }
+      }
+    },
+    {
+      "name": "8. Admin - List All Volunteers",
+      "request": {
+        "method": "GET",
+        "header": [
+          { "key": "Authorization", "value": "Bearer {{token}}" }
+        ],
+        "url": {
+          "raw": "{{baseUrl}}/volunteers?page=1&limit=20",
+          "host": ["{{baseUrl}}"],
+          "path": ["volunteers"],
+          "query": [
+            { "key": "page", "value": "1" },
+            { "key": "limit", "value": "20" }
+          ]
+        }
+      }
+    },
+    {
+      "name": "9. Admin - Update Participation Funnel Status",
+      "request": {
+        "method": "PATCH",
+        "header": [
+          { "key": "Content-Type", "value": "application/json" },
+          { "key": "Authorization", "value": "Bearer {{token}}" }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"status\": \"COMPLETED\",\n  \"hoursContributed\": 6,\n  \"notes\": \"Completed all workshop modules and capstone project\"\n}"
+        },
+        "url": {
+          "raw": "{{baseUrl}}/registrations/:registrationId",
+          "host": ["{{baseUrl}}"],
+          "path": ["registrations", ":registrationId"],
+          "variable": [
+            { "key": "registrationId", "value": "REPLACE_WITH_REGISTRATION_ID" }
+          ]
+        }
+      }
+    },
+    {
+      "name": "10. Analytics - Dashboard Metrics",
+      "request": {
+        "method": "GET",
+        "header": [
+          { "key": "Authorization", "value": "Bearer {{token}}" }
+        ],
+        "url": {
+          "raw": "{{baseUrl}}/analytics/dashboard",
+          "host": ["{{baseUrl}}"],
+          "path": ["analytics", "dashboard"]
+        }
+      }
+    }
+  ]
+}
